@@ -1,0 +1,135 @@
+//RSSI Moshell script v1.0 | by Jonte Sehlin/Telog AB - credits to Daniel Fodor/WeConsulting AB for supplying RSSI samples script
+l+mm /dev/null
+confbl+
+lt ^eutrancell
+!echo "RSSI Moshell script v1.0"
+func get_rssi
+  for $mo in $1
+  do
+    $cellid = rdn($mo)
+    pget $cellid pmRadioRecInterferencePwr$  > $rssi[0]
+    wait 10
+    pget $cellid pmRadioRecInterferencePwr$  > $rssi[1]
+    $rssi_old = split($rssi[0][])
+    $rssi_new = split($rssi[1][])
+    $rssi[0] = $rssi_new[3] - $rssi_old[3]
+    $rssi[1] = $rssi_new[4] - $rssi_old[4]
+    $rssi[2] = $rssi_new[5] - $rssi_old[5]
+    $rssi[3] = $rssi_new[6] - $rssi_old[6]
+    $rssi[4] = $rssi_new[7] - $rssi_old[7]
+    $rssi[5] = $rssi_new[8] - $rssi_old[8]
+    $rssi[6] = $rssi_new[9] - $rssi_old[9]
+    $rssi[7] = $rssi_new[10] - $rssi_old[10]
+    $rssi[8] = $rssi_new[11] - $rssi_old[11]
+    $rssi[9] = $rssi_new[12] - $rssi_old[12]
+    $rssi[10] = $rssi_new[13] - $rssi_old[13]
+    $rssi[11] = $rssi_new[14] - $rssi_old[14]
+    $rssi[12] = $rssi_new[15] - $rssi_old[15]
+    $rssi[13] = $rssi_new[16] - $rssi_old[16]
+    $rssi[14] = $rssi_new[17] - $rssi_old[17]
+    $rssi[15] = $rssi_new[18] - $rssi_old[18]
+    $averageRssi_c = $rssi[0] * 121
+    $averageRssi[0] = $averageRssi_c
+    $averageRssi_c = $rssi[1] * 120
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[2] * 119
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[3] * 118
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[4] * 117
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[5] * 116
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[6] * 115
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[7] * 114
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[8] * 113
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[9] * 112
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[10] * 108
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[11] * 104
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[12] * 100
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[13] * 96
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[14] * 92
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi_c = $rssi[15] * 90
+    $averageRssi[0] = $averageRssi[0] + $averageRssi_c
+    $averageRssi[1] = $rssi[0]
+    $averageRssi[1] = $averageRssi[1] + $rssi[1]
+    $averageRssi[1] = $averageRssi[1] + $rssi[2]
+    $averageRssi[1] = $averageRssi[1] + $rssi[3]
+    $averageRssi[1] = $averageRssi[1] + $rssi[4]
+    $averageRssi[1] = $averageRssi[1] + $rssi[5]
+    $averageRssi[1] = $averageRssi[1] + $rssi[6]
+    $averageRssi[1] = $averageRssi[1] + $rssi[7]
+    $averageRssi[1] = $averageRssi[1] + $rssi[8]
+    $averageRssi[1] = $averageRssi[1] + $rssi[9]
+    $averageRssi[1] = $averageRssi[1] + $rssi[10]
+    $averageRssi[1] = $averageRssi[1] + $rssi[11]
+    $averageRssi[1] = $averageRssi[1] + $rssi[12]
+    $averageRssi[1] = $averageRssi[1] + $rssi[13]
+    $averageRssi[1] = $averageRssi[1] + $rssi[14]
+    $averageRssi[1] = $averageRssi[1] + $rssi[15]
+    $averageRssi[3] = $averageRssi[0] / $averageRssi[1]
+
+    !echo "\n"
+    !echo "$cellid Recorded RSSI values in dBm for last 10sec"
+    !echo "Interval\tNumber of samples"
+    !echo "-999 <= -121dBm\t"$rssi[0]
+    !echo "-120 <= -120dBm\t"$rssi[1]
+    !echo "-120 <= -119dBm\t$rssi[2]"
+    !echo "-119 <= -118dBm\t$rssi[3]"
+    !echo "-118 <= -117dBm\t$rssi[4]"
+    !echo "-117 <= -116dBm\t$rssi[5]"
+    !echo "-116 <= -115dBm\t$rssi[6]"
+    !echo "-115 <= -114dBm\t$rssi[7]"
+    !echo "-114 <= -113dBm\t$rssi[8]"
+    !echo "-113 <= -112dBm\t$rssi[9]"
+    !echo "-112 <= -108dBm\t$rssi[10]"
+    !echo "-108 <= -104dBm\t$rssi[11]"
+    !echo "-104 <= -100dBm\t$rssi[12]"
+    !echo "-100 <= -96dBm \t$rssi[13]"
+    !echo "-96 <= -92dBm  \t$rssi[14]"
+    !echo "-92dBm <      \t$rssi[15]"
+    !echo "Average RSSI \t~-$averageRssi[3]dBm"
+    !echo "\n"
+  done
+endfunc
+
+for ever
+$mode = readinput(Chose one of the folowing:\n0 - single request\n1 - looped request\n\r)
+  if $mode ~ (0|1)
+    break
+  fi
+done
+
+$rssi_target = readinput(Enter cellid/s or press [enter] to read RSSI from all cells:\n\r)
+if $rssi_target ~ .*
+  $rssi_target = $rssi_target -s , -r | -g
+  mr cells
+  ma cells ^eutrancellfdd=($rssi_target)
+else
+  mr cells
+  ma cells ^eutrancellfdd
+fi
+
+if $mode = 0
+  get_rssi cells
+else if $mode = 1
+  for ever
+    get_rssi cells
+    wait 1
+  done
+else
+  !echo Error
+fi
+
+confbl
+unset all
+l-
